@@ -1,61 +1,71 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { useState } from "react";
+
 function CardCreatingFromUser() {
-
-  const Fun = () => {
-    setData([...Data, userData]);
-    userData = {
-      firstname: "",
-      lastname: "",
-      email: "",
-    };
-  };
-
-  var userData = {
+  const [Data, setData] = useState([]);
+  const [userData, setUserData] = useState({
     firstname: "",
     lastname: "",
     email: "",
+  });
+
+  const Fun = (e) => {
+    e.preventDefault(); // prevent page reload
+    if (!userData.firstname || !userData.lastname || !userData.email) {
+      alert("Please fill all fields");
+      return;
+    }
+    setData([...Data, userData]);
+    setUserData({ firstname: "", lastname: "", email: "" }); // reset inputs
   };
-  const [Data, setData] = useState([]);
 
   const GetData = (key, event) => {
-    userData[key] = event.target.value;
+    setUserData({ ...userData, [key]: event.target.value });
   };
 
   return (
     <>
-      <form>
+      <form onSubmit={Fun}>
         <div>
           <label>First Name : </label>
           <input
-            type="text" required
+            type="text"
+            required
+            value={userData.firstname}
             onChange={(event) => GetData("firstname", event)}
           />
         </div>
 
         <div>
           <label>Last Name : </label>
-          <input type="text" onChange={(event) => GetData("lastname", event)} />
+          <input
+            type="text"
+            required
+            value={userData.lastname}
+            onChange={(event) => GetData("lastname", event)}
+          />
         </div>
         <div>
           <label>Email : </label>
-          <input type="email" onChange={(event) => GetData("email", event)} />
+          <input
+            type="email"
+            required
+            value={userData.email}
+            onChange={(event) => GetData("email", event)}
+          />
         </div>
+        <button type="submit">Add Data</button>
       </form>
-      <button onClick={Fun}>Add Data</button>
 
       <div className="parent">
-        {Data.map((ele, index) => {
-          return (
-            <div className="child">
-              <div>First Name : {ele.firstname}</div>
-              <div>Last Name : {ele.lastname}</div>
-              <div>Email : {ele.email}</div>
-            </div>
-          );
-        })}
+        {Data.map((ele, index) => (
+          <div key={index} className="child">
+            <div>First Name : {ele.firstname}</div>
+            <div>Last Name : {ele.lastname}</div>
+            <div>Email : {ele.email}</div>
+          </div>
+        ))}
+        
       </div>
     </>
   );
