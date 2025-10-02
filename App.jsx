@@ -63,12 +63,14 @@ function App() {
     }
     return (
         <>
+        
             <h1>...</h1>
-            <input type="text"
+            <input className="mainInput" type="text" placeholder="Add your task make the day productive...."
                 required value={task}
                 onChange={GetData}
             />
-            <button className="addButton" onClick={Add}><i style={{ padding: "20px" }} className="fa-solid fa-plus"></i></button>
+            <button className="addButton" disabled={editIndex !== null } onClick={Add}><i style={{ padding: "20px" }} className="fa-solid fa-plus"></i></button> 
+            {/* disabled={editIndex !== null} to disable the adding, disable is a keyword */}
             <div className="tasks">
                 {
                     !tasks.length ?
@@ -82,10 +84,10 @@ function App() {
                                 <div className="taskbox" key={index} >
                                     {(editIndex === index) ? (
                                         <>
-                                            <input type="text"
+                                            <input type="text" className="editInput"
                                                 value={editText} onChange={(e) => setEditText(e.target.value)}
                                             />
-                                            <button onClick={() => saveText(index)}>Save</button>
+                                            <button className="saveButton" onClick={() => saveText(index)}>Save</button>
                                         </>
 
 
