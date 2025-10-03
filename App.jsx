@@ -14,10 +14,6 @@ function App() {
     const [editIndex, setEditIndex] = useState(null); //to know the index of editing text
     const [editText, setEditText] = useState(""); // to store the temporary text
 
-
-
-
-
     const DeleteTask = (index) => {
         const temp = tasks.filter((_, i) => i !== index);
         settasks(temp);
@@ -61,21 +57,36 @@ function App() {
         setEditText("");
 
     }
+
+    const year=now.getFullYear();
+    const month=now.getMonth()+1;
+    const day=now.getDate();
+
+
     return (
         <>
-        
-            <h1>...</h1>
+            <div className="datetimebox">
+                <div className="div">{day}</div>
+                <span style={{fontSize:"20px",margin:"0",padding:"0",display:"flex",justifyContent:"center",alignItems:"center"}}>-</span>
+                <div className="div">{month}</div>
+                <span style={{fontSize:"20px",margin:"0",padding:"0",display:"flex",justifyContent:"center",alignItems:"center"}}>-</span>
+                <div className="div">{year}</div>
+                <div style={{display:"flex",justifyContent:"center",alignItems:"end"}}>
+                    <div>{hours}:{minutes}:{sex} {ampm} </div>
+                </div>
+            </div>
+            <h1>Just Do It</h1>
             <input className="mainInput" type="text" placeholder="Add your task make the day productive...."
                 required value={task}
                 onChange={GetData}
             />
-            <button className="addButton" disabled={editIndex !== null } onClick={Add}><i style={{ padding: "20px" }} className="fa-solid fa-plus"></i></button> 
+            <button className="addButton" disabled={editIndex !== null } onClick={Add}><i style={{ padding: "20px", transform: "translate(-6px,-2px)", fontSize:"15px" }} className="fa-solid fa-plus"></i></button> 
             {/* disabled={editIndex !== null} to disable the adding, disable is a keyword */}
             <div className="tasks">
                 {
                     !tasks.length ?
                         //condition for no elements present elements in the tasks llist 
-                        (<h1>No more elements</h1>
+                        (<h1>No more tasks for day</h1>
 
                         ) : (
 
@@ -90,14 +101,13 @@ function App() {
                                             <button className="saveButton" onClick={() => saveText(index)}>Save</button>
                                         </>
 
-
                                         ) : (<p onClick={() => setExpand(expandindex === index ? null : index)} className={expandindex === index ? "expanded" : "closed"}>{task}</p>)
                                     }
 
                                     <div className="icons">
 
                                         <i className="fa fa-edit" onClick={()=>startEdit(index)}></i>
-                                        <i className="fa fa-trash" onClick={() => DeleteTask(index)}></i>
+                                        <i  disabled={editIndex !== null } className="fa fa-trash" onClick={() => DeleteTask(index)}></i>
                                         <i className={`fa fa-check ${done.includes(task) ? "active" : ""} `} onClick={() => workdone(task)} ></i>
 
                                     </div>
