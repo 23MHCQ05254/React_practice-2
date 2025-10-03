@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "./App.css";
 import CardComponent from "./CardComponent";
@@ -9,7 +9,7 @@ function App() {
     const [tasks, settasks] = useState([]);//storing the vals
     const [expandindex, setExpand] = useState(null);
     const [done, setDone] = useState([]);
-    //editng state
+    //editng state.
 
     const [editIndex, setEditIndex] = useState(null); //to know the index of editing text
     const [editText, setEditText] = useState(""); // to store the temporary text
@@ -24,6 +24,7 @@ function App() {
     };
 
     const Add = () => {
+
         if (task.trim() === "") {
             alert("enter the Task");
             return;
@@ -58,10 +59,32 @@ function App() {
 
     }
 
-    const year=now.getFullYear();
-    const month=now.getMonth()+1;
-    const day=now.getDate();
+    const [time,settime] = useState(new Date());
 
+    useEffect(()=>{
+        const intervalId=setInterval(() => {
+            settime(new Date());
+        }, 1000);
+
+        return ()=>{
+            clearInterval(intervalId);
+        }
+    },[]);
+
+    function formattime(){
+        let month=time.getMonth()+1;
+        let day=time.getDate();
+        let year=time.getFullYear();
+        let hrs=time.getHours();
+        let hours=hrs % 12 || 12;
+        let mins = String(time.getMinutes()).padStart(2, "0");        
+        let ampm= hrs>=12 ? "pm": "am" ;
+
+        return {year,hours,month,day,ampm,mins};
+    }
+    const {year,hours,month,day,ampm,mins}= formattime();
+
+    
 
     return (
         <>
@@ -71,8 +94,9 @@ function App() {
                 <div className="div">{month}</div>
                 <span style={{fontSize:"20px",margin:"0",padding:"0",display:"flex",justifyContent:"center",alignItems:"center"}}>-</span>
                 <div className="div">{year}</div>
+                
                 <div style={{display:"flex",justifyContent:"center",alignItems:"end"}}>
-                    <div>{hours}:{minutes}:{sex} {ampm} </div>
+                    <div className="timeBox">{hours}:{mins} {ampm} </div>
                 </div>
             </div>
             <h1>Just Do It</h1>
@@ -91,8 +115,10 @@ function App() {
                         ) : (
 
                             tasks.map((task, index) => (
-
+                                
                                 <div className="taskbox" key={index} >
+
+                                    {/* <div className="datetime">{day}/{month}/{year} , {hours}:{mins} </div> */}
                                     {(editIndex === index) ? (
                                         <>
                                             <input type="text" className="editInput"
